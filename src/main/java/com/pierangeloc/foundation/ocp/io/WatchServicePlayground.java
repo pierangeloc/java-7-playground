@@ -13,7 +13,7 @@ public class WatchServicePlayground {
         WatchService watchService = FileSystems.getDefault().newWatchService();
 
         //2. register watchService on the path we want to watch. Tell him which events we want to monitor
-        Path tmpPath = Paths.get("/tmp/mysql-configuration");
+        Path tmpPath = Paths.get("/tmp");
         tmpPath.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
 
         //wait (blocking) for events to occur
