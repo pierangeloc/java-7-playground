@@ -17,7 +17,7 @@ public class FileVisitorPlayground {
     }
 
     public static void main(String[] args) throws IOException {
-        String path = "/home/pierangeloc/Documents/projects/java/work/java-playground/src/main/java/com";
+        String path = ".";
         walkTree(path);
     }
 
