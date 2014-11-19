@@ -59,7 +59,7 @@ public class DriverManagerConcepts {
 
     private static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver"); //mandatory for JDBC < 4.0
-        return DriverManager.getConnection(CONNECTION_URL, "root", "eagle01");
+        return DriverManager.getConnection(CONNECTION_URL, "root", "pwd");
     }
 
     public static void updateCustomers() throws SQLException, ClassNotFoundException {
