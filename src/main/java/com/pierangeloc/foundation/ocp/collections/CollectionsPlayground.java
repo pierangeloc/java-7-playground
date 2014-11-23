@@ -84,14 +84,14 @@ public class CollectionsPlayground {
         //now extending list: exception. the list is non extensible
 //        integersAsList.add("seven");
     }
-
+public static  void doSomething(Object o){}
     public static void doesCollectionsSupportNull() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(null);
+        Object q;
 
         LinkedList<String> linkedList = new LinkedList<>();
         linkedList.add(null);
-
         Vector<String> vector  = new Vector<>();
         vector.add(null);
 
@@ -125,5 +125,9 @@ public class CollectionsPlayground {
 //        binarySearch();
 //        arrayToListAndViceversa();
         doesCollectionsSupportNull();
+
+        TreeSet<Dog> ts = new TreeSet<>();
     }
+
+    static class Dog{}
 }
