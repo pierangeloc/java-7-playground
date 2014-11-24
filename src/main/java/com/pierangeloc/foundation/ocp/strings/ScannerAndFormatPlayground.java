@@ -1,4 +1,4 @@
-package com.pierangeloc.foundation.ocp.formattingparsing;
+package com.pierangeloc.foundation.ocp.strings;
 
 import java.util.Locale;
 import java.util.Scanner;
