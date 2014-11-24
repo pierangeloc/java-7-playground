@@ -8,18 +8,17 @@ import java.util.regex.Pattern;
  */
 public class SimpleRegexPlayground {
 
-
-
     public static void printMatchingPositions(String regex, String testString) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(testString);
         System.out.println("Regex: " + matcher.pattern());
-        System.out.println("String: " + testString);
+        System.out.println("String: >" + testString + "<");
         System.out.println("        012345678901234567890123456789");
         while(matcher.find()) {
-            System.out.println("matcher start at: " + matcher.start() + "; group: " + matcher.group());
+            System.out.println("matcher start at: " + matcher.start() + "; end: " + matcher.end() +  "; group: " + matcher.group());
         }
     }
+
 
     public static void main(String[] args) {
         String regex = "ab";
@@ -33,5 +32,9 @@ public class SimpleRegexPlayground {
         printMatchingPositions(".*xx", "yyxxxyxx");
         //with reluctant quantifier, 2 results are returned
         printMatchingPositions(".*?xx", "yyxxxyxx");
+
+        //zero-length match
+        printMatchingPositions("a?", "bbbbbabbbbbba");
+        printMatchingPositions("a?", "");
     }
 }
