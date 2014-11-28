@@ -94,13 +94,159 @@ public class ThreadsPlayground {
 
     }
 
+    public static void triggerDeadlock() {
+        final StringBuffer lockA = new StringBuffer();
+        final StringBuffer lockB = new StringBuffer();
+
+        Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lockA){
+                    System.out.println(this.getName() + " acquired lockA");
+                    System.out.println(this.getName() + " trying to acquire lockB");
+                    synchronized (lockB) {
+                        System.out.println(this.getName() + " acquired lockB");
+                    }
+                }
+            }
+        };
+        t1.setName("Thread1");
+
+        Thread t2 = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lockB){
+                    System.out.println(this.getName() + " acquired lockB");
+                    System.out.println(this.getName() + " trying to acquire lockA");
+
+                    synchronized (lockA) {
+                        System.out.println(this.getName() + " acquired lockA");
+                    }
+                }
+            }
+        };
+        t2.setName("Thread2");
+
+        t1.start();
+        t2.start();
+    }
+
+    public static void doNotTriggerDeadlockAsAcquisitionOrderIsTheSame() {
+        final StringBuffer lockA = new StringBuffer();
+        final StringBuffer lockB = new StringBuffer();
+
+        Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lockA){
+                    System.out.println(this.getName() + " acquired lockA");
+                    System.out.println(this.getName() + " trying to acquire lockB");
+                    synchronized (lockB) {
+                        System.out.println(this.getName() + " acquired lockB");
+                    }
+                }
+            }
+        };
+        t1.setName("Thread1");
+
+        Thread t2 = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lockA){
+                    System.out.println(this.getName() + " acquired lockA");
+                    System.out.println(this.getName() + " trying to acquire lockB");
+
+                    synchronized (lockB) {
+                        System.out.println(this.getName() + " acquired lockB");
+                    }
+                }
+            }
+        };
+        t2.setName("Thread2");
+
+        t1.start();
+        t2.start();
+    }
+
+
+    public static void waitNotifyToJoinThreads() {
+        final Object lock = new Object();
+
+        Thread executor = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+                    System.out.println("executor waiting for preparation to be performed: ");
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    for(int i = 0; i < 10; i++) {
+                        System.out.println("executor running step: " + i);
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        };
+
+        executor.setName("Execution Thread");
+
+        Thread preparator = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+
+                    for(int i = 0; i < 100; i++) {
+                        System.out.println("preparator running step: " + i);
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    lock.notify();
+                }
+            }
+        };
+        preparator.setName("Preparation Thread");
+
+        executor.start();
+        preparator.start();
+    }
+
+    public static void cannotWaitOrNotifyWithoutLock() {
+        try {
+            ThreadsPlayground.class.wait();
+        } catch (Exception e) {
+            System.out.println("can't wait without lock: ");
+            e.printStackTrace();
+        }
+
+        try {
+            ThreadsPlayground.class.notify();
+        } catch (Exception e) {
+            System.out.println("can't notify without lock");
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws Exception {
 //        startLoopPrintingThreads();
 //        startAnotherThreadAndJoinOnIt();
 //        canSynchronizedOnObjectWithinStaticMethod();
 //        priorityIsAlwaysInheritedFromCreator();
-        synchronizeThreads();
+//        synchronizeThreads();
+//        triggerDeadlock();
+//        doNotTriggerDeadlockAsAcquisitionOrderIsTheSame();
+//        waitNotifyToJoinThreads();
+        cannotWaitOrNotifyWithoutLock();
     }
+
 
     static class LoopPrintingRunnable implements Runnable {
 
