@@ -219,6 +219,88 @@ public class ThreadsPlayground {
         preparator.start();
     }
 
+    public static void whenMultipleThreadsWaitingGetNotifyOnlyOneIsPickedForNotification() throws InterruptedException {
+        final Object lock = new Object();
+
+        Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                synchronized(lock) {
+                    System.out.println("Thread " + getName() + " waiting for notification");
+                    try {
+                        lock.wait();
+                        System.out.println("Thread " + getName() + " got notified, continuing");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t1.setName("Thread 1 - waiting");
+
+        Thread t2 = new Thread() {
+            @Override
+            public void run() {
+                synchronized(lock) {
+                    System.out.println("Thread " + getName() + " waiting for notification");
+                    try {
+                        lock.wait();
+                        System.out.println("Thread " + getName() + " got notified, continuing");
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t2.setName("Thread 2 - waiting");
+
+
+        Thread t3 = new Thread() {
+            @Override
+            public void run() {
+                synchronized(lock) {
+                    System.out.println("Thread " + getName() + " notifying");
+                    try {
+                        lock.notify();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        t3.setName("Thread 3 - notifying");
+
+        t1.start();
+        Thread.sleep(500);
+        t2.start();
+        Thread.sleep(500);
+        t3.start();
+
+        //at this point, one thread has been notified, the other one is waiting.
+        // Not being daemon thread it means it keeps the main in waiting state, it doesn't finish
+
+    }
+
+
+    public static void threadThrowsException() {
+        Thread t1 = new Thread(){
+            @Override
+            public void run() {
+                throw new NullPointerException("Booom!!!");
+            }
+        };
+
+        t1.start();
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Even if thread has thrown exception, main thread can still continue");
+    }
+
     public static void cannotWaitOrNotifyWithoutLock() {
         try {
             ThreadsPlayground.class.wait();
@@ -244,7 +326,10 @@ public class ThreadsPlayground {
 //        triggerDeadlock();
 //        doNotTriggerDeadlockAsAcquisitionOrderIsTheSame();
 //        waitNotifyToJoinThreads();
-        cannotWaitOrNotifyWithoutLock();
+//        cannotWaitOrNotifyWithoutLock();
+//        whenMultipleThreadsWaitingGetNotifyOnlyOneIsPickedForNotification();
+
+        threadThrowsException();
     }
 
 
