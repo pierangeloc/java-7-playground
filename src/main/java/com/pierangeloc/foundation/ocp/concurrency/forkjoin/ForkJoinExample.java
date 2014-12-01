@@ -1,4 +1,4 @@
-package com.pierangeloc.foundation.ocp.concurrency;
+package com.pierangeloc.foundation.ocp.concurrency.forkjoin;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;

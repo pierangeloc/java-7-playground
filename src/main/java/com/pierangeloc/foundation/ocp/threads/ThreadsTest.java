@@ -1,4 +1,4 @@
-package com.pierangeloc.foundation.ocp.concurrency;
+package com.pierangeloc.foundation.ocp.threads;
 
 /**
  * Created by pierangeloc on 4-11-14.

@@ -8,6 +8,6 @@ public class LocksPlayground {
 
 
     public static void main(String[] args) {
-        assert false;
+//        TODO: do it
     }
 }

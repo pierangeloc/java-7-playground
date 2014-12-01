@@ -1,4 +1,4 @@
-package com.pierangeloc.foundation.ocp.concurrency;
+package com.pierangeloc.foundation.ocp.concurrency.utilities;
 
 import java.util.Date;
 import java.util.concurrent.Exchanger;

@@ -1,4 +1,4 @@
-package com.pierangeloc.foundation.ocp.concurrency;
+package com.pierangeloc.foundation.ocp.concurrency.utilities;
 
 import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
